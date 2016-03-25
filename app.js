@@ -46,6 +46,7 @@ app.controller('MainController', function ($scope, $firebase, Posts) {
             post.name = "";
             post.description = "";
             post.url = "";
+            post.user=$scope.authData.twitter.username
         } else {
             
             alert('Sorry, you need all of those inputs to be filled or you need to be logged in!')
