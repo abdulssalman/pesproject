@@ -3,8 +3,6 @@ var app = angular.module('reddit-clone', ['ngRoute', 'firebase']);
 
 
 app.constant('fbURL', 'https://blazing-torch-8765.firebaseio.com/');
-
-
 app.factory('Posts', function ($firebase, fbURL) {
     return $firebase(new Firebase(fbURL)).$asArray();
 });
@@ -56,18 +54,30 @@ app.controller('MainController', function ($scope, $firebase, Posts) {
 
     
     $scope.addVote = function (post) {
-        
+        if($scope.authData)
+        {
         post.votes++;
         
         Posts.$save(post);
     }
+    else{
+        alert('You need to be logged in before doing that!')
+    }
+    }
 
     
     $scope.deletePost = function (post) {
-        
+        if($scope.authData && $scope.authData.twitter.username==post.user){
         var postForDeletion = new Firebase('https://blazing-torch-8765.firebaseio.com/' + post.$id);
         
         postForDeletion.remove();
+    }
+    else if($scope.authData){
+        alert('You cant delete others posts!')
+    }
+    else{
+        alert('You need to be logged in before doing that!')
+    }
     }
 
     $scope.addComment = function (post, comment) {
