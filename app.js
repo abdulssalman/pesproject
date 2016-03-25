@@ -2,7 +2,7 @@
 var app = angular.module('reddit-clone', ['ngRoute', 'firebase']);
 
 
-app.constant('fbURL', 'https://unknown-chat.firebaseio.com');
+app.constant('fbURL', 'https://blazing-torch-8765.firebaseio.com/');
 
 
 app.factory('Posts', function ($firebase, fbURL) {
@@ -65,14 +65,14 @@ app.controller('MainController', function ($scope, $firebase, Posts) {
     
     $scope.deletePost = function (post) {
         
-        var postForDeletion = new Firebase('https://unknown-chat.firebaseio.com/' + post.$id);
+        var postForDeletion = new Firebase('https://blazing-torch-8765.firebaseio.com/' + post.$id);
         
         postForDeletion.remove();
     }
 
     $scope.addComment = function (post, comment) {
         if ($scope.authData) {
-            var ref = new Firebase('https://unknown-chat.firebaseio.com/' + post.$id + '/comments');
+            var ref = new Firebase('https://blazing-torch-8765.firebaseio.com/' + post.$id + '/comments');
             var sync = $firebase(ref);
             $scope.comments = sync.$asArray();
             $scope.comments.$add({
@@ -87,14 +87,14 @@ app.controller('MainController', function ($scope, $firebase, Posts) {
     }
     
     $scope.removeComment = function(post, comment) {
-        var commentForDeletion = new Firebase('https://unknown-chat.firebaseio.com/' + post.$id + '/comments/' + comment.$id);
+        var commentForDeletion = new Firebase('https://blazing-torch-8765.firebaseio.com/' + post.$id + '/comments/' + comment.$id);
         commentForDeletion.remove();
     }
 
     
     $scope.login = function () {
         
-        var ref = new Firebase('https://unknown-chat.firebaseio.com/');
+        var ref = new Firebase('https://blazing-torch-8765.firebaseio.com/');
         
         ref.authWithOAuthPopup('twitter', function (error, authData) {
             
