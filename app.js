@@ -47,6 +47,7 @@ app.controller('MainController', function ($scope, $firebase, Posts) {
             post.description = "";
             post.url = "";
             post.user=$scope.authData.twitter.username
+            
         } else {
             
             alert('Sorry, you need all of those inputs to be filled or you need to be logged in!')
@@ -58,6 +59,39 @@ app.controller('MainController', function ($scope, $firebase, Posts) {
         if($scope.authData)
         {
         post.votes++;
+        
+        Posts.$save(post);
+    }
+    else{
+        alert('You need to be logged in before doing that!')
+    }
+    }
+    $scope.delVote = function (post) {
+        if($scope.authData)
+        {
+        post.votes--;
+        
+        Posts.$save(post);
+    }
+    else{
+        alert('You need to be logged in before doing that!')
+    }
+    }
+    $scope.addcmtVote = function (comment) {
+        if($scope.authData)
+        {
+        comment.votes++;
+        
+        Posts.$save(post);
+    }
+    else{
+        alert('You need to be logged in before doing that!')
+    }
+    }
+    $scope.delcmtVote = function (comment) {
+        if($scope.authData)
+        {
+        comment.votes--;
         
         Posts.$save(post);
     }
@@ -82,25 +116,36 @@ app.controller('MainController', function ($scope, $firebase, Posts) {
     }
 
     $scope.addComment = function (post, comment) {
-        if ($scope.authData) {
+        if ($scope.authData ) {
             var ref = new Firebase('https://blazing-torch-8765.firebaseio.com/' + post.$id + '/comments');
             var sync = $firebase(ref);
             $scope.comments = sync.$asArray();
             $scope.comments.$add({
                 user: $scope.authData.twitter.username,
-                text: comment.text
+                text: comment.text,
+                votes:0
             });
-        } else {
-            alert('You need to be logged in before doing that!')
-        }
+        } 
+    
+    else{
+        alert('You need to be logged in before doing that!')
+    }
         
         comment.text = "";
     }
     
     $scope.removeComment = function(post, comment) {
+        if($scope.authData && $scope.authData.twitter.username==comment.user){
         var commentForDeletion = new Firebase('https://blazing-torch-8765.firebaseio.com/' + post.$id + '/comments/' + comment.$id);
         commentForDeletion.remove();
     }
+    else if($scope.authData){
+        alert('You cant remove others comments!')
+    }
+    else{
+        alert('You need to login first')
+    }
+}
 
     
     $scope.login = function () {
