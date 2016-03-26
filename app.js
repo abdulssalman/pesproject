@@ -27,7 +27,7 @@ app.controller('MainController', function ($scope, $firebase, Posts) {
 
     
     $scope.savePost = function (post) {
-        if (post.name && post.description && post.url && $scope.authData) {
+        if ((post.name && post.description && post.url && $scope.tauthData) ) {
             
             Posts.$add({
                 
@@ -39,16 +39,37 @@ app.controller('MainController', function ($scope, $firebase, Posts) {
                 
                 votes: 0,
                 
-                user: $scope.authData.twitter.username
+                user: $scope.tauthData.twitter.username
             });
 
             
             post.name = "";
             post.description = "";
             post.url = "";
-            post.user=$scope.authData.twitter.username
+            post.user=$scope.tauthData.twitter.username
             
-        } else {
+        }
+else if((post.name && post.description && post.url && $scope.regauthData)){
+    Posts.$add({
+                
+                name: post.name,
+                
+                description: post.description,
+                
+                url: post.url,
+                
+                votes: 0,
+                
+                user: $scope.regauthData.password.email
+            });
+
+            
+            post.name = "";
+            post.description = "";
+            post.url = "";
+            post.user=$scope.regauthData.password.email
+}
+         else {
             
             alert('Sorry, you need all of those inputs to be filled or you need to be logged in!')
         }
@@ -56,7 +77,7 @@ app.controller('MainController', function ($scope, $firebase, Posts) {
 
     
     $scope.addVote = function (post) {
-        if($scope.authData)
+        if($scope.tauthData || $scope.regauthData)
         {
         post.votes++;
         
@@ -67,7 +88,7 @@ app.controller('MainController', function ($scope, $firebase, Posts) {
     }
     }
     $scope.delVote = function (post) {
-        if($scope.authData)
+        if($scope.tauthData || $scope.regauthData)
         {
         post.votes--;
         
@@ -78,7 +99,7 @@ app.controller('MainController', function ($scope, $firebase, Posts) {
     }
     }
     $scope.addcmtVote = function (post,comment) {
-        if($scope.authData)
+        if($scope.tauthData || $scope.regauthData)
         {
         comment.votes++;
         
@@ -89,7 +110,7 @@ app.controller('MainController', function ($scope, $firebase, Posts) {
     }
     }
     $scope.delcmtVote = function (post,comment) {
-        if($scope.authData)
+        if($scope.tauthData || $scope.regauthData)
         {
         comment.votes--;
         
@@ -102,12 +123,11 @@ app.controller('MainController', function ($scope, $firebase, Posts) {
 
     
     $scope.deletePost = function (post) {
-        if($scope.authData && $scope.authData.twitter.username==post.user){
+        if(($scope.tauthData && $scope.tauthData.twitter.username==post.user)||($scope.regauthData && $scope.regauthData.password.email==post.user)){
         var postForDeletion = new Firebase('https://blazing-torch-8765.firebaseio.com/' + post.$id);
-        
         postForDeletion.remove();
     }
-    else if($scope.authData){
+    else if($scope.tauthData || $scope.regauthData){
         alert('You cant delete others posts!')
     }
     else{
@@ -116,12 +136,23 @@ app.controller('MainController', function ($scope, $firebase, Posts) {
     }
 
     $scope.addComment = function (post, comment) {
-        if ($scope.authData ) {
+        if ($scope.tauthData) {
             var ref = new Firebase('https://blazing-torch-8765.firebaseio.com/' + post.$id + '/comments');
             var sync = $firebase(ref);
             $scope.comments = sync.$asArray();
             $scope.comments.$add({
-                user: $scope.authData.twitter.username,
+                user: $scope.tauthData.twitter.username,
+                text: comment.text,
+                votes:0
+            });
+        }
+
+        else if($scope.regauthData){
+            var ref = new Firebase('https://blazing-torch-8765.firebaseio.com/' + post.$id + '/comments');
+            var sync = $firebase(ref);
+            $scope.comments = sync.$asArray();
+            $scope.comments.$add({
+                user: $scope.regauthData.password.email,
                 text: comment.text,
                 votes:0
             });
@@ -135,11 +166,11 @@ app.controller('MainController', function ($scope, $firebase, Posts) {
     }
     
     $scope.removeComment = function(post,comment) {
-    if($scope.authData){
+    if(($scope.tauthData && $scope.tauthData.twitter.username==comment.user)||($scope.regauthData && $scope.regauthData.password.email==comment.user)){
         var commentForDeletion = new Firebase('https://blazing-torch-8765.firebaseio.com/' + post.$id + '/comments/' + comment.$id);
         commentForDeletion.remove();
     }
-    else if($scope.authData){
+    else if($scope.tauthData || $scope.regauthData){
         alert('You cant remove others comments!')
     }
     else{
@@ -148,7 +179,7 @@ app.controller('MainController', function ($scope, $firebase, Posts) {
 }
 
     
-    $scope.login = function () {
+    $scope.tLogin = function () {
         
         var ref = new Firebase('https://blazing-torch-8765.firebaseio.com/');
         
@@ -162,7 +193,41 @@ app.controller('MainController', function ($scope, $firebase, Posts) {
                 alert('You were logged in successfully.');
             }
             
-            $scope.authData = authData;
+            $scope.tauthData = authData;
         });
     }
+
+$scope.userSignup = function (user){
+var ref = new Firebase("https://blazing-torch-8765.firebaseio.com/");
+ref.createUser({
+    username:user.name,
+  email    : user.email,
+  password : user.password
+}, function(error, userData) {
+  if (error) {
+    alert("Error creating user");
+  } else {
+    alert("Successfully created user account");
+  }
 });
+}
+$scope.userLogin = function(login){
+    var ref = new Firebase("https://blazing-torch-8765.firebaseio.com/");
+ref.authWithPassword({
+  email    : login.email,
+  password : login.password
+}, function(error, authData) {
+  if (error) {
+    alert("Login Failed!");
+  } else {
+    alert("Logged in successfully");
+  }
+  $scope.regauthData=authData;
+
+});
+
+
+}
+});
+
+
