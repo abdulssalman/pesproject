@@ -60,8 +60,82 @@
 <br>
 
 
-<button class="btn btn-primary" ng-click="login()">Login with Twitter</button>
 
-<span>Currently logged in as: {{authData.twitter.username}}</span>
+
+<!-- Button trigger modal -->
+
 <br/>
 <br/>
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="row border-between">
+          <div class="col-md-6">
+              <h3 class="text-primary text-center">Login</h3>
+              <form>
+        
+        <div class="form-group">
+            <label class="control-label" for="focusedInput">Email Id</label>
+            <input type="text" ng-model="login.email" class="form-control">
+        </div>
+        
+        <div class="form-group">
+            <label class="control-label" for="focusedInput">Password</label>
+            <input type="password" ng-model="login.password" class="form-control">
+        </div>
+       
+        <button ng-click="userLogin(login)" class="btn btn-success btn-block">Login</button>
+<br/>
+<br/>
+
+<div class="row">
+<div class="col-md-6 text-center ">
+    <button class="btn btn-info " ng-click="tLogin()">Login with<br/> Twitter</button>
+</div>
+<div class="col-md-6 text-center ">
+    <button class="btn btn-danger " ng-click="gLogin()">Login with <br/>Google+</button>
+</div>
+
+</div>
+<br/>
+<div class="row">
+    <div class="col-md-12 text-center">
+        <button class="btn btn-primary " ng-click="fLogin()">Login with <br/>facebook</button>
+    </div>
+</div>
+    </form>
+          </div>
+          <div class="col-md-6">
+              <h3 class="text-primary text-center">SignUp</h3>
+              <form>
+        
+        <div class="form-group">
+            <label class="control-label" for="focusedInput">Username</label>
+            <input type="text" ng-model="user.name" class="form-control">
+        </div>
+        
+        <div class="form-group">
+            <label class="control-label" for="focusedInput">Email Id</label>
+            <input type="text" ng-model="user.email" class="form-control">
+        </div>
+        
+        <div class="form-group">
+            <label class="control-label" for="focusedInput">Password</label>
+            <input type="password" ng-model="user.password" class="form-control">
+        </div>
+        <br>
+       
+        <button ng-click="userSignup(user)" class="btn btn-success btn-block">SignUp</button>
+    </form>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer ">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
