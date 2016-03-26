@@ -11,6 +11,9 @@
     <script src="bower_components/angular-route/angular-route.min.js"></script>
     
     <script src='https://cdn.firebase.com/js/client/2.2.1/firebase.js'></script>
+    <script   src="https://code.jquery.com/jquery-1.12.2.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
     
     <script src="https://cdn.firebase.com/libs/angularfire/0.9.0/angularfire.min.js"></script>
     
@@ -23,6 +26,11 @@
 <body style="width: 80%; margin: 0 auto">
     
     <h1 class="text-center">iMPoster</h1>
+    <div class="row text-center">
+        <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+  Login or SignUp
+</button>
+    </div>
     
     <div ng-view></div>
 </body>
