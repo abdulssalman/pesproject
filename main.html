@@ -41,10 +41,11 @@
         <div class="panel-footer">
             {{comment.text}}
             <br>
-            <button class="btn btn-danger" ng-click="removeComment(post,comment)">Remove Comment</button>
-            <button ng-click="addcmtVote(comment)" class="btn btn-info">Upvote</button>
+            <button class="btn btn-danger" 
+            ng-click="removeComment(post,comment)">Remove Comment</button>
+            <button ng-click="addcmtVote(post,comment)" class="btn btn-info">Upvote</button>
     <span class="text-primary">{{comment.votes}}</span>
-    <button ng-click="delcmtVote(comment)" class="btn btn-primary">Downvote</button>
+    <button ng-click="delcmtVote(post,comment)" class="btn btn-primary">Downvote</button>
         </div>
     </div>
     <form>
@@ -62,3 +63,6 @@
 <button class="btn btn-primary" ng-click="login()">Login with Twitter</button>
 
 <span>Currently logged in as: {{authData.twitter.username}}</span>
+<br/>
+<br/>
+<button class="btn btn-primary" ng-click="reglogin()">Login or Signup</button>

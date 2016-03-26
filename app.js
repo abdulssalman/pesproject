@@ -77,7 +77,7 @@ app.controller('MainController', function ($scope, $firebase, Posts) {
         alert('You need to be logged in before doing that!')
     }
     }
-    $scope.addcmtVote = function (comment) {
+    $scope.addcmtVote = function (post,comment) {
         if($scope.authData)
         {
         comment.votes++;
@@ -88,7 +88,7 @@ app.controller('MainController', function ($scope, $firebase, Posts) {
         alert('You need to be logged in before doing that!')
     }
     }
-    $scope.delcmtVote = function (comment) {
+    $scope.delcmtVote = function (post,comment) {
         if($scope.authData)
         {
         comment.votes--;
@@ -134,8 +134,8 @@ app.controller('MainController', function ($scope, $firebase, Posts) {
         comment.text = "";
     }
     
-    $scope.removeComment = function(post, comment) {
-        if($scope.authData && $scope.authData.twitter.username==comment.user){
+    $scope.removeComment = function(post,comment) {
+    if($scope.authData){
         var commentForDeletion = new Firebase('https://blazing-torch-8765.firebaseio.com/' + post.$id + '/comments/' + comment.$id);
         commentForDeletion.remove();
     }
