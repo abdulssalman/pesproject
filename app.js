@@ -178,9 +178,13 @@ else if((post.name && post.description && post.url && $scope.regauthData)){
     }
 }
 
-    
+   $scope.dontshowName=true;
+   $scope.showName=false; 
     $scope.tLogin = function () {
-        
+        if($scope.tauthData){
+            alert("User already logged in");
+        }
+        else{
         var ref = new Firebase('https://blazing-torch-8765.firebaseio.com/');
         
         ref.authWithOAuthPopup('twitter', function (error, authData) {
@@ -194,7 +198,11 @@ else if((post.name && post.description && post.url && $scope.regauthData)){
             }
             
             $scope.tauthData = authData;
+            $scope.showName=true;
+            $scope.dontshowName=false;
+            $scope.username= $scope.tauthData.twitter.username;
         });
+    }
     }
 
 $scope.userSignup = function (user){
@@ -212,6 +220,10 @@ ref.createUser({
 });
 }
 $scope.userLogin = function(login){
+    if($scope.regauthData){
+        alert("User already logged in");
+    }
+    else{
     var ref = new Firebase("https://blazing-torch-8765.firebaseio.com/");
 ref.authWithPassword({
   email    : login.email,
@@ -223,11 +235,17 @@ ref.authWithPassword({
     alert("Logged in successfully");
   }
   $scope.regauthData=authData;
-
+  $scope.showName=true;
+  $scope.dontshowName=false;
+  $scope.username= $scope.regauthData.password.email;
 });
-
+}
 
 }
+
+
 });
+
+
 
 
