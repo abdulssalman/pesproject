@@ -3,10 +3,14 @@
   Login or SignUp
 </button>
     </div>
-    <div class="row text-center">
-        <h3  class="text-center text-primary"ng-show="showName">Welcome,
+    <div class="row text-center" ng-show="showName">
+        <h3  class="text-center text-primary">Welcome,
   {{username}}
 </h3>
+<br/>
+<button type="button" class="btn btn-primary btn-lg" ng-click="logOut()">
+  Logout
+</button>
     </div>
     <br/>
 <div class="container">
