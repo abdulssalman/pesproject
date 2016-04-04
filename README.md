@@ -25,3 +25,10 @@ Use "https://gist.github.com/hofmannsven/6814451" for cheatsheet.
 Built with <3 using vanilla Bootstrap and AngularJs.
 
 
+For testing: on new branch:
+
+git add -A
+git commit "commit message"
+git checkout master
+git merge new(incase conflict resolve and merge)
+git push origin master
