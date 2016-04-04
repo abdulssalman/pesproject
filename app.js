@@ -1,5 +1,5 @@
 //Built by Vamsi. tats ryt biches
-var app = angular.module('reddit-clone', ['ngRoute', 'firebase']);
+var app = angular.module('reddit-clone', ['ngRoute', 'firebase','ui.bootstrap']);
 
 
 app.constant('fbURL', 'https://blazing-torch-8765.firebaseio.com/');
@@ -42,7 +42,6 @@ app.controller('MainController', function ($scope, $firebase, Posts) {
                 user: $scope.tauthData.twitter.username
             });
 
-            
             post.name = "";
             post.description = "";
             post.url = "";
@@ -165,17 +164,10 @@ else if((post.name && post.description && post.url && $scope.regauthData)){
         comment.text = "";
     }
     
-    $scope.removeComment = function(post,comment) {
-    if(($scope.tauthData && $scope.tauthData.twitter.username==comment.user)||($scope.regauthData && $scope.regauthData.password.email==comment.user)){
-        var commentForDeletion = new Firebase('https://blazing-torch-8765.firebaseio.com/' + post.$id + '/comments/' + comment.$id);
-        commentForDeletion.remove();
-    }
-    else if($scope.tauthData || $scope.regauthData){
-        alert('You cant remove others comments!')
-    }
-    else{
-        alert('You need to login first')
-    }
+    $scope.removeComment = function(post, comment) {
+    
+        var remcmt = new Firebase('https://blazing-torch-8765.firebaseio.com/' + post.$id + '/comments/' + comment.$id);
+        remcmt.remove(); 
 }
 
    $scope.dontshowName=true;
@@ -196,7 +188,9 @@ else if((post.name && post.description && post.url && $scope.regauthData)){
             else {
                 alert('You were logged in successfully.');
             }
-            
+            $scope.close = function(result){
+  dialog.close(result);
+};
             $scope.tauthData = authData;
             $scope.showName=true;
             $scope.dontshowName=false;
@@ -242,6 +236,12 @@ ref.authWithPassword({
 }
 
 }
+$scope.logOut= function(){
+    var ref = new Firebase("https://blazing-torch-8765.firebaseio.com/");
+ref.unauth();
+location.reload();
+}
+
 
 
 });

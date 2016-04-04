@@ -22,7 +22,11 @@ For usage:
 Use "https://gist.github.com/hofmannsven/6814451" for cheatsheet.
 
 
+
+
 Built with <3 using vanilla Bootstrap and AngularJs.
+
+
 
 
 For testing: on new branch:
