@@ -74,13 +74,18 @@ else if((post.name && post.description && post.url && $scope.regauthData)){
         }
     }
 
+
+         $scope.upvote = fasle;
     
     $scope.addVote = function (post) {
         if($scope.tauthData || $scope.regauthData)
         {
+
         post.votes++;
         
         Posts.$save(post);
+
+        $scope.upvote = true;
     }
     else{
         alert('You need to be logged in before doing that!')
