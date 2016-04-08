@@ -103,14 +103,14 @@ else if((post.name && post.description && post.url && $scope.gauthData)){
                 
                 votes: 0,
                 
-                user: $scope.fauthData.google.displayName
+                user: $scope.gauthData.google.displayName
             });
 
             
             post.name = "";
             post.description = "";
             post.url = "";
-            post.user=$scope.fauthData.google.displayName
+            post.user=$scope.gauthData.google.displayName
 
 }
          else {
@@ -170,7 +170,7 @@ else if((post.name && post.description && post.url && $scope.gauthData)){
 
     
     $scope.deletePost = function (post) {
-        if(($scope.tauthData && $scope.tauthData.twitter.username==post.user)||($scope.regauthData && $scope.regauthData.password.email==post.user) || ($scope.facebook.displayName==post.user)){
+        if(($scope.tauthData && $scope.tauthData.twitter.username==post.user)||($scope.regauthData && $scope.regauthData.password.email==post.user) || ($scope.fauthData & $scope.facebook.displayName==post.user) || ($scope.gauthData & $scope.google.displayName==post.user)){
         var postForDeletion = new Firebase('https://blazing-torch-8765.firebaseio.com/' + post.$id);
         postForDeletion.remove();
     }
@@ -214,6 +214,16 @@ else if((post.name && post.description && post.url && $scope.gauthData)){
                 votes:0
             });
         } 
+        else if($scope.gauthData){
+            var ref = new Firebase('https://blazing-torch-8765.firebaseio.com/' + post.$id + '/comments');
+            var sync = $firebase(ref);
+            $scope.comments = sync.$asArray();
+            $scope.comments.$add({
+                user: $scope.gauthData.google.displayName,
+                text: comment.text,
+                votes:0
+            });
+        }
     else{
         alert('You need to be logged in before doing that!')
     }
