@@ -36,7 +36,7 @@
     </form>
 </div>
 
-<div ng-repeat="post in posts">
+<div ng-repeat="post in posts | orderBy : '-votes'">
   <h4>{{post.user}}</h4>
     <h2><a ng-href="{{post.url}}">{{post.name}}</a></h2>
    
@@ -48,7 +48,7 @@
     
     <br>
     <br>
-    <div class="panel panel-default" ng-repeat="comment in post.comments">
+    <div class="panel panel-default" ng-repeat="comment in post.comments | orderBy : '-votes' ">
         <div class="panel-body">
             <a ng-href="https://twitter.com/{{comment.user}}">{{comment.user}}</a>
         </div>
