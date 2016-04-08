@@ -90,6 +90,8 @@ else if((post.name && post.description && post.url && $scope.fauthData)){
             post.url = "";
             post.user=$scope.fauthData.facebook.displayName
 
+}            
+
 else if((post.name && post.description && post.url && $scope.gauthData)){
     Posts.$add({
                 
@@ -338,9 +340,9 @@ ref.authWithOAuthPopup("facebook", function(error, authData) {
 
            $scope.gauthData = authData;
            $scope.showName = true;
-           $scope.dontshowName = false;
+           $scope.dontshowName = false; 
            $scope.username = $scope.gauthData.google.displayName; 
-        }
+        });
      }
  }   
 
