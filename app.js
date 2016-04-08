@@ -79,14 +79,14 @@ else if((post.name && post.description && post.url && $scope.fauthData)){
                 
                 votes: 0,
                 
-                user: $scope.facebook.displayName
+                user: $scope.fauthData.facebook.displayName
             });
 
             
             post.name = "";
             post.description = "";
             post.url = "";
-            post.user=$scope.facebook.displayName
+            post.user=$scope.fauthData.facebook.displayName
 }
          else {
             
@@ -184,7 +184,7 @@ else if((post.name && post.description && post.url && $scope.fauthData)){
             var sync = $firebase(ref);
             $scope.comments = sync.$asArray();
             $scope.comments.$add({
-                user: $scope.facebook.displayName,
+                user: $scope.fauthData.facebook.displayName,
                 text: comment.text,
                 votes:0
             });
@@ -289,7 +289,7 @@ ref.authWithOAuthPopup("facebook", function(error, authData) {
    $scope.fauthData=authData;
   $scope.showName=true;
   $scope.dontshowName=false;
-  $scope.username= $scope.facebook.displayName;
+  $scope.username= $scope.fauthData.facebook.displayName;
 });
 
         
