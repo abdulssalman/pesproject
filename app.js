@@ -103,14 +103,14 @@ else if((post.name && post.description && post.url && $scope.gauthData)){
                 
                 votes: 0,
                 
-                user: $scope.fauthData.google.displayName
+                user: $scope.gauthData.google.displayName
             });
 
             
             post.name = "";
             post.description = "";
             post.url = "";
-            post.user=$scope.fauthData.google.displayName
+            post.user=$scope.gauthData.google.displayName
 
 }
          else {
