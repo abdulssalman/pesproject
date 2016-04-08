@@ -37,7 +37,10 @@ app.controller('MainController', function ($scope, $firebase, Posts) {
                 
                 url: post.url,
                 
-                votes: 0,
+                votes: {
+                         user: $scope.tauthData.twitter.username;
+                         vote:0;
+                        },
                 
                 user: $scope.tauthData.twitter.username
             });
