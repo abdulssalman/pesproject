@@ -221,7 +221,6 @@ else if((post.name && post.description && post.url && $scope.fauthData)){
                 alert('You were logged in successfully.');
             }
             
-
             
   $scope.tauthData=authData;
             $scope.showName=true;
