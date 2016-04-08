@@ -21,7 +21,7 @@ app.config(function ($routeProvider) {
 });
 
 
-app.controller('MainController',["$cookies",function ($scope, $firebase, Posts, $cookies) {
+app.controller('MainController',function ($scope, $firebase, Posts,) {
 
     
     $scope.posts = Posts;
