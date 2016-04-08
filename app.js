@@ -37,15 +37,9 @@ app.controller('MainController',function ($scope, $firebase, Posts) {
                 description: post.description,
                 
                 url: post.url,
-<<<<<<< HEAD
-                
-                votes: {
-                         user: $scope.tauthData.twitter.username;
-                         vote:0;
-                        },
-=======
+
                 votes:0,
->>>>>>> c885db6f1a9af24254d5f6ae801bda7ad3cf6803
+
                 
                 user: $scope.tauthData.twitter.username
             });
@@ -95,6 +89,27 @@ else if((post.name && post.description && post.url && $scope.fauthData)){
             post.description = "";
             post.url = "";
             post.user=$scope.fauthData.facebook.displayName
+
+else if((post.name && post.description && post.url && $scope.gauthData)){
+    Posts.$add({
+                
+                name: post.name,
+                
+                description: post.description,
+                
+                url: post.url,
+                
+                votes: 0,
+                
+                user: $scope.fauthData.google.displayName
+            });
+
+            
+            post.name = "";
+            post.description = "";
+            post.url = "";
+            post.user=$scope.fauthData.google.displayName
+
 }
          else {
             
@@ -105,7 +120,7 @@ else if((post.name && post.description && post.url && $scope.fauthData)){
     
     
     $scope.addVote = function (post) {
-        if($scope.tauthData || $scope.regauthData || $scope.fauthData)
+        if($scope.tauthData || $scope.regauthData || $scope.fauthData || $scope.gauthData)
         {
             
         post.votes++;
@@ -118,7 +133,7 @@ else if((post.name && post.description && post.url && $scope.fauthData)){
     }
     }
     $scope.delVote = function (post) {
-        if($scope.tauthData || $scope.regauthData || $scope.fauthData)
+        if($scope.tauthData || $scope.regauthData || $scope.fauthData || $scope.gauthData)
         {
         post.votes--;
         
@@ -129,7 +144,7 @@ else if((post.name && post.description && post.url && $scope.fauthData)){
     }
     }
     $scope.addcmtVote = function (post,comment) {
-        if($scope.tauthData || $scope.regauthData || $scope.fauthData)
+        if($scope.tauthData || $scope.regauthData || $scope.fauthData || $scope.gauthData)
         {
         comment.votes++;
         
@@ -140,7 +155,7 @@ else if((post.name && post.description && post.url && $scope.fauthData)){
     }
     }
     $scope.delcmtVote = function (post,comment) {
-        if($scope.tauthData || $scope.regauthData || $scope.fauthData)
+        if($scope.tauthData || $scope.regauthData || $scope.fauthData || $scope.gauthData)
         {
         comment.votes--;
         
@@ -157,7 +172,7 @@ else if((post.name && post.description && post.url && $scope.fauthData)){
         var postForDeletion = new Firebase('https://blazing-torch-8765.firebaseio.com/' + post.$id);
         postForDeletion.remove();
     }
-    else if($scope.tauthData || $scope.regauthData || $scope.fauthData){
+    else if($scope.tauthData || $scope.regauthData || $scope.fauthData || $scope.gauthData){
         alert('You cant delete others posts!')
     }
     else{
@@ -281,6 +296,8 @@ $scope.logOut= function(){
 ref.unauth();
 location.reload();
 }
+
+
 $scope.fLogin = function () {
         if($scope.fauthData){
             alert("User already logged in");
@@ -302,6 +319,30 @@ ref.authWithOAuthPopup("facebook", function(error, authData) {
         
     }
     }
+
+ $scope.gLogin = function (){
+     if($scope.gauthData){
+        alert("User already logged in");
+     }
+
+     else{
+        var ref = new Firebase("https://blazing-torch-8765.firebaseio.com");
+
+        ref.authWithOAuthPopup("google",function(error,authData){
+            if(error){
+                alert("Login failed!");
+            }
+            else{
+                alert("Authenticated successfully");
+            }
+
+           $scope.gauthData = authData;
+           $scope.showName = true;
+           $scope.dontshowName = false;
+           $scope.username = $scope.gauthData.google.displayName; 
+        }
+     }
+ }   
 
 });
 
