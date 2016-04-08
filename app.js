@@ -286,18 +286,13 @@ ref.authWithOAuthPopup("facebook", function(error, authData) {
   } else {
     alert("Authenticated successfully");
   }
-  $scope.fauthData=authData;
+   $scope.fauthData=authData;
   $scope.showName=true;
   $scope.dontshowName=false;
   $scope.username= $scope.facebook.displayName;
 });
 
-            $cookies.put('authentictdata',authData)
-  $scope.tauthData=$cookies.get('authentictdata')
-            $scope.showName=true;
-            $scope.dontshowName=false;
-            $scope.username= $scope.tauthData.twitter.username;
-        });
+        
     }
     }
 
