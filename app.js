@@ -37,10 +37,7 @@ app.controller('MainController',["$cookies",function ($scope, $firebase, Posts, 
                 description: post.description,
                 
                 url: post.url,
-                
-                votes: [{
-                    user:
-                }]
+                votes:0,
                 
                 user: $scope.tauthData.twitter.username
             });
