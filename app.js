@@ -278,7 +278,7 @@ ref.unauth();
 location.reload();
 }
 $scope.fLogin = function () {
-        if($scope.tauthData){
+        if($scope.fauthData){
             alert("User already logged in");
         }
         else{
