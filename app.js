@@ -23,24 +23,24 @@ app.config(function ($routeProvider) {
 
 app.controller('MainController',function ($scope, $firebase, Posts) {
 
-    
+
     $scope.posts = Posts;
 
-    
+
     $scope.savePost = function (post) {
         if ((post.name && post.description && post.url && $scope.tauthData) ) {
-            
+
             Posts.$add({
-                
+
                 name: post.name,
-                
+
                 description: post.description,
-                
+
                 url: post.url,
 
                 votes:0,
 
-                
+
                 user: $scope.tauthData.twitter.username
             });
 
@@ -48,23 +48,23 @@ app.controller('MainController',function ($scope, $firebase, Posts) {
             post.description = "";
             post.url = "";
             post.user=$scope.tauthData.twitter.username
-            
+
         }
 else if((post.name && post.description && post.url && $scope.regauthData)){
     Posts.$add({
-                
+
                 name: post.name,
-                
+
                 description: post.description,
-                
+
                 url: post.url,
-                
+
                 votes: 0,
-                
+
                 user: $scope.regauthData.password.email
             });
 
-            
+
             post.name = "";
             post.description = "";
             post.url = "";
@@ -72,41 +72,41 @@ else if((post.name && post.description && post.url && $scope.regauthData)){
 }
 else if((post.name && post.description && post.url && $scope.fauthData)){
     Posts.$add({
-                
+
                 name: post.name,
-                
+
                 description: post.description,
-                
+
                 url: post.url,
-                
+
                 votes: 0,
-                
+
                 user: $scope.fauthData.facebook.displayName
             });
 
-            
+
             post.name = "";
             post.description = "";
             post.url = "";
             post.user=$scope.fauthData.facebook.displayName
 
-}            
+}
 
 else if((post.name && post.description && post.url && $scope.gauthData)){
     Posts.$add({
-                
+
                 name: post.name,
-                
+
                 description: post.description,
-                
+
                 url: post.url,
-                
+
                 votes: 0,
-                
+
                 user: $scope.gauthData.google.displayName
             });
 
-            
+
             post.name = "";
             post.description = "";
             post.url = "";
@@ -114,19 +114,19 @@ else if((post.name && post.description && post.url && $scope.gauthData)){
 
 }
          else {
-            
+
             alert('Sorry, you need all of those inputs to be filled or you need to be logged in!')
         }
     }
 
-    
-    
+
+
     $scope.addVote = function (post) {
         if($scope.tauthData || $scope.regauthData || $scope.fauthData || $scope.gauthData)
         {
-            
+
         post.votes++;
-        
+
         Posts.$save(post);
 
     }
@@ -138,7 +138,7 @@ else if((post.name && post.description && post.url && $scope.gauthData)){
         if($scope.tauthData || $scope.regauthData || $scope.fauthData || $scope.gauthData)
         {
         post.votes--;
-        
+
         Posts.$save(post);
     }
     else{
@@ -149,7 +149,7 @@ else if((post.name && post.description && post.url && $scope.gauthData)){
         if($scope.tauthData || $scope.regauthData || $scope.fauthData || $scope.gauthData)
         {
         comment.votes++;
-        
+
         Posts.$save(post);
     }
     else{
@@ -160,7 +160,7 @@ else if((post.name && post.description && post.url && $scope.gauthData)){
         if($scope.tauthData || $scope.regauthData || $scope.fauthData || $scope.gauthData)
         {
         comment.votes--;
-        
+
         Posts.$save(post);
     }
     else{
@@ -168,7 +168,7 @@ else if((post.name && post.description && post.url && $scope.gauthData)){
     }
     }
 
-    
+
     $scope.deletePost = function (post) {
         if(($scope.tauthData && $scope.tauthData.twitter.username==post.user)||($scope.regauthData && $scope.regauthData.password.email==post.user) || ($scope.fauthData & $scope.facebook.displayName==post.user) || ($scope.gauthData & $scope.google.displayName==post.user)){
         var postForDeletion = new Firebase('https://blazing-torch-8765.firebaseio.com/' + post.$id);
@@ -203,7 +203,7 @@ else if((post.name && post.description && post.url && $scope.gauthData)){
                 text: comment.text,
                 votes:0
             });
-        } 
+        }
     else if($scope.fauthData){
             var ref = new Firebase('https://blazing-torch-8765.firebaseio.com/' + post.$id + '/comments');
             var sync = $firebase(ref);
@@ -213,7 +213,7 @@ else if((post.name && post.description && post.url && $scope.gauthData)){
                 text: comment.text,
                 votes:0
             });
-        } 
+        }
         else if($scope.gauthData){
             var ref = new Firebase('https://blazing-torch-8765.firebaseio.com/' + post.$id + '/comments');
             var sync = $firebase(ref);
@@ -227,36 +227,36 @@ else if((post.name && post.description && post.url && $scope.gauthData)){
     else{
         alert('You need to be logged in before doing that!')
     }
-        
+
         comment.text = "";
     }
-    
+
     $scope.removeComment = function(post, comment) {
-    
+
         var remcmt = new Firebase('https://blazing-torch-8765.firebaseio.com/' + post.$id + '/comments/' + comment.$id);
-        remcmt.remove(); 
+        remcmt.remove();
 }
 
    $scope.dontshowName=true;
-   $scope.showName=false; 
+   $scope.showName=false;
     $scope.tLogin = function () {
         if($scope.tauthData){
             alert("User already logged in");
         }
         else{
         var ref = new Firebase('https://blazing-torch-8765.firebaseio.com/');
-        
+
         ref.authWithOAuthPopup('twitter', function (error, authData) {
-            
+
             if (error) {
                 alert('Sorry, there was an error.');
             }
-            
+
             else {
                 alert('You were logged in successfully.');
             }
-            
-            
+
+
   $scope.tauthData=authData;
             $scope.showName=true;
             $scope.dontshowName=false;
@@ -294,7 +294,7 @@ ref.authWithPassword({
   } else {
     alert("Logged in successfully");
   }
-  
+
   $scope.regauthData=authData;
   $scope.showName=true;
   $scope.dontshowName=false;
@@ -328,7 +328,7 @@ ref.authWithOAuthPopup("facebook", function(error, authData) {
   $scope.username= $scope.fauthData.facebook.displayName;
 });
 
-        
+
     }
     }
 
@@ -350,14 +350,10 @@ ref.authWithOAuthPopup("facebook", function(error, authData) {
 
            $scope.gauthData = authData;
            $scope.showName = true;
-           $scope.dontshowName = false; 
-           $scope.username = $scope.gauthData.google.displayName; 
+           $scope.dontshowName = false;
+           $scope.username = $scope.gauthData.google.displayName;
         });
      }
- }   
+ }
 
 });
-
-
-
-
