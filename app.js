@@ -21,7 +21,7 @@ app.config(function ($routeProvider) {
 });
 
 
-app.controller('MainController',function ($scope, $firebase, Posts,) {
+app.controller('MainController',function ($scope, $firebase, Posts) {
 
     
     $scope.posts = Posts;
@@ -296,7 +296,7 @@ ref.authWithOAuthPopup("facebook", function(error, authData) {
     }
     }
 
-}]);
+});
 
 
 
