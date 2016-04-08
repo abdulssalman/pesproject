@@ -37,14 +37,14 @@
 </div>
 
 <div ng-repeat="post in posts">
-  <h4><a ng-href="https://twitter.com/{{post.user}}">{{post.user}}</a></h4>
+  <h4>{{post.user}}</h4>
     <h2><a ng-href="{{post.url}}">{{post.name}}</a></h2>
    
     <p>{{post.description}}</p>
     <button ng-click="deletePost(post)" class="btn btn-danger">Delete Post</button>
-    <button ng-click="addVote(post)" class="btn btn-info">Upvote</button>
+    <button ng-click="addVote(post)" ng-disabled="disuppost"class="btn btn-info">Upvote</button>
     <span class="text-primary">{{post.votes}}</span>
-    <button ng-click="delVote(post)" class="btn btn-primary">Downvote</button>
+    <button ng-click="delVote(post)" ng-disabled="disdownpost"class="btn btn-primary">Downvote</button>
     
     <br>
     <br>
@@ -57,9 +57,9 @@
             <br>
             <button  ng-click="removeComment(post,comment)" class="btn btn-danger" 
             >Remove Comment</button>
-            <button ng-click="addcmtVote(post,comment)" class="btn btn-info">Upvote</button>
+            <button ng-click="addcmtVote(post,comment)" ng-disabled="disupcomment"class="btn btn-info">Upvote</button>
     <span class="text-primary">{{comment.votes}}</span>
-    <button ng-click="delcmtVote(post,comment)" class="btn btn-primary">Downvote</button>
+    <button ng-click="delcmtVote(post,comment)" ng-disabled="disdowncomment"class="btn btn-primary">Downvote</button>
         </div>
     </div>
     <form>

@@ -1,11 +1,12 @@
 //Built by Vamsi. tats ryt biches
-var app = angular.module('reddit-clone', ['ngRoute', 'firebase','ui.bootstrap']);
+var app = angular.module('reddit-clone', ['ngRoute', 'firebase','ui.bootstrap','ngCookies']);
 
 
 app.constant('fbURL', 'https://blazing-torch-8765.firebaseio.com/');
 app.factory('Posts', function ($firebase, fbURL) {
     return $firebase(new Firebase(fbURL)).$asArray();
 });
+
 
 
 app.config(function ($routeProvider) {
@@ -20,7 +21,7 @@ app.config(function ($routeProvider) {
 });
 
 
-app.controller('MainController', function ($scope, $firebase, Posts) {
+app.controller('MainController',function ($scope, $firebase, Posts) {
 
     
     $scope.posts = Posts;
@@ -36,11 +37,15 @@ app.controller('MainController', function ($scope, $firebase, Posts) {
                 description: post.description,
                 
                 url: post.url,
+<<<<<<< HEAD
                 
                 votes: {
                          user: $scope.tauthData.twitter.username;
                          vote:0;
                         },
+=======
+                votes:0,
+>>>>>>> c885db6f1a9af24254d5f6ae801bda7ad3cf6803
                 
                 user: $scope.tauthData.twitter.username
             });
@@ -71,18 +76,38 @@ else if((post.name && post.description && post.url && $scope.regauthData)){
             post.url = "";
             post.user=$scope.regauthData.password.email
 }
+else if((post.name && post.description && post.url && $scope.fauthData)){
+    Posts.$add({
+                
+                name: post.name,
+                
+                description: post.description,
+                
+                url: post.url,
+                
+                votes: 0,
+                
+                user: $scope.fauthData.facebook.displayName
+            });
+
+            
+            post.name = "";
+            post.description = "";
+            post.url = "";
+            post.user=$scope.fauthData.facebook.displayName
+}
          else {
             
             alert('Sorry, you need all of those inputs to be filled or you need to be logged in!')
         }
     }
 
-
+    
     
     $scope.addVote = function (post) {
-        if($scope.tauthData || $scope.regauthData)
+        if($scope.tauthData || $scope.regauthData || $scope.fauthData)
         {
-
+            
         post.votes++;
         
         Posts.$save(post);
@@ -93,7 +118,7 @@ else if((post.name && post.description && post.url && $scope.regauthData)){
     }
     }
     $scope.delVote = function (post) {
-        if($scope.tauthData || $scope.regauthData)
+        if($scope.tauthData || $scope.regauthData || $scope.fauthData)
         {
         post.votes--;
         
@@ -104,7 +129,7 @@ else if((post.name && post.description && post.url && $scope.regauthData)){
     }
     }
     $scope.addcmtVote = function (post,comment) {
-        if($scope.tauthData || $scope.regauthData)
+        if($scope.tauthData || $scope.regauthData || $scope.fauthData)
         {
         comment.votes++;
         
@@ -115,7 +140,7 @@ else if((post.name && post.description && post.url && $scope.regauthData)){
     }
     }
     $scope.delcmtVote = function (post,comment) {
-        if($scope.tauthData || $scope.regauthData)
+        if($scope.tauthData || $scope.regauthData || $scope.fauthData)
         {
         comment.votes--;
         
@@ -128,11 +153,11 @@ else if((post.name && post.description && post.url && $scope.regauthData)){
 
     
     $scope.deletePost = function (post) {
-        if(($scope.tauthData && $scope.tauthData.twitter.username==post.user)||($scope.regauthData && $scope.regauthData.password.email==post.user)){
+        if(($scope.tauthData && $scope.tauthData.twitter.username==post.user)||($scope.regauthData && $scope.regauthData.password.email==post.user) || ($scope.facebook.displayName==post.user)){
         var postForDeletion = new Firebase('https://blazing-torch-8765.firebaseio.com/' + post.$id);
         postForDeletion.remove();
     }
-    else if($scope.tauthData || $scope.regauthData){
+    else if($scope.tauthData || $scope.regauthData || $scope.fauthData){
         alert('You cant delete others posts!')
     }
     else{
@@ -162,7 +187,16 @@ else if((post.name && post.description && post.url && $scope.regauthData)){
                 votes:0
             });
         } 
-    
+    else if($scope.fauthData){
+            var ref = new Firebase('https://blazing-torch-8765.firebaseio.com/' + post.$id + '/comments');
+            var sync = $firebase(ref);
+            $scope.comments = sync.$asArray();
+            $scope.comments.$add({
+                user: $scope.fauthData.facebook.displayName,
+                text: comment.text,
+                votes:0
+            });
+        } 
     else{
         alert('You need to be logged in before doing that!')
     }
@@ -194,10 +228,9 @@ else if((post.name && post.description && post.url && $scope.regauthData)){
             else {
                 alert('You were logged in successfully.');
             }
-            $scope.close = function(result){
-  dialog.close(result);
-};
-            $scope.tauthData = authData;
+            
+            
+  $scope.tauthData=authData;
             $scope.showName=true;
             $scope.dontshowName=false;
             $scope.username= $scope.tauthData.twitter.username;
@@ -234,6 +267,7 @@ ref.authWithPassword({
   } else {
     alert("Logged in successfully");
   }
+  
   $scope.regauthData=authData;
   $scope.showName=true;
   $scope.dontshowName=false;
@@ -247,8 +281,27 @@ $scope.logOut= function(){
 ref.unauth();
 location.reload();
 }
+$scope.fLogin = function () {
+        if($scope.fauthData){
+            alert("User already logged in");
+        }
+        else{
+        var ref = new Firebase("https://blazing-torch-8765.firebaseio.com");
+ref.authWithOAuthPopup("facebook", function(error, authData) {
+  if (error) {
+    alert("Login Failed!");
+  } else {
+    alert("Authenticated successfully");
+  }
+   $scope.fauthData=authData;
+  $scope.showName=true;
+  $scope.dontshowName=false;
+  $scope.username= $scope.fauthData.facebook.displayName;
+});
 
-
+        
+    }
+    }
 
 });
 
