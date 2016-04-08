@@ -1,4 +1,4 @@
-//Built by Vamsi. tats ryt biches
+
 var app = angular.module('reddit-clone', ['ngRoute', 'firebase','ui.bootstrap','ngCookies']);
 
 
@@ -12,8 +12,8 @@ app.factory('Posts', function ($firebase, fbURL) {
 app.config(function ($routeProvider) {
     $routeProvider
         .when('/', {
-            controller: 'MainController',
             templateUrl: 'main.html'
+            controller: 'MainController',
         })
         .otherwise({
             redirectTo: '/'
