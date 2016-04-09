@@ -1,38 +1,43 @@
 iMPoster
 ============
 
-For usage:
+For development:
 
-1. Clone the rep. SSH or HTTPS your choice.
+Clone the repository using SSH or HTTPS. SSH keys need to be updated first.
 
-2. Make sure you have npm installed. Do npm --version to check.
+Make sure you have npm installed. To check for installation:
 
-3. CD into the directory.
+    npm --version
 
-4. "sudo npm start" will start local server
+cd to the app:
 
-5. Go to http://localhost:8000/index.html
+    cd harshavamsi.github.io
 
-6. New additions must be done on the "new" branch. 
+Default branch is master which is what is deployed onto the github page. Make changes on the new branch and merge:
 
-7. "git checkout new" will change to new branch. And stash/commit changes before returning to master.
+    git checkout new
 
-8. I will merge branches and no changes must be made to master directly.
+The local server should start on port 8000 by default but this can be changed in your package.json file. Start local server:
+
+    sudo npm start
+
+This will start server on http://localhost:8000/index.html
+
+After making changes to your new branch add commit and then switch to master:
+
+    git add .
+
+    git commit -m "your message"
+
+Switch back to master and merge the new branch:
+
+    git checkout master
+
+    git merge new
+
+If you've modified same lines of code on both branches you'll get a merge conflict, resolve it and commit again.    
 
 Use "https://gist.github.com/hofmannsven/6814451" for cheatsheet.
 
 
-
-
 Built with <3 using vanilla Bootstrap and AngularJs.
-
-
-
-
-For testing: on new branch:
-
-git add -A
-git commit "commit message"
-git checkout master
-git merge new(incase conflict resolve and merge)
-git push origin master
