@@ -12,8 +12,8 @@ app.factory('Posts', function ($firebase, fbURL) {
 app.config(function ($routeProvider) {
     $routeProvider
         .when('/', {
-            templateUrl: 'main.html'
-            controller: 'MainController',
+            templateUrl: 'main.html',
+            controller: 'MainController'
         })
         .otherwise({
             redirectTo: '/'

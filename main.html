@@ -15,23 +15,23 @@
     <br/>
 <div class="container">
     <form>
-        
+
         <div class="form-group">
             <label class="control-label" for="focusedInput">Post Name</label>
             <input type="text" ng-model="post.name" class="form-control">
         </div>
-        
+
         <div class="form-group">
             <label class="control-label" for="focusedInput">Post Description</label>
             <input type="text" ng-model="post.description" class="form-control">
         </div>
-        
+
         <div class="form-group">
             <label class="control-label" for="focusedInput">Post URL</label>
             <input type="text" ng-model="post.url" class="form-control">
         </div>
         <br>
-       
+
         <button ng-click="savePost(post)" class="btn btn-success btn-block">Save Post</button>
     </form>
 </div>
@@ -39,23 +39,23 @@
 <div ng-repeat="post in posts | orderBy : '-votes'">
   <h4>{{post.user}}</h4>
     <h2><a ng-href="{{post.url}}">{{post.name}}</a></h2>
-   
+
     <p>{{post.description}}</p>
     <button ng-click="deletePost(post)" class="btn btn-danger">Delete Post</button>
     <button ng-click="addVote(post)" ng-disabled="disuppost"class="btn btn-info">Upvote</button>
     <span class="text-primary">{{post.votes}}</span>
     <button ng-click="delVote(post)" ng-disabled="disdownpost"class="btn btn-primary">Downvote</button>
-    
+
     <br>
     <br>
     <div class="panel panel-default" ng-repeat="comment in post.comments | orderBy : '-votes' ">
         <div class="panel-body">
-            <a ng-href="https://twitter.com/{{comment.user}}">{{comment.user}}</a>
+            {{comment.user}}
         </div>
         <div class="panel-footer">
             {{comment.text}}
             <br>
-            <button  ng-click="removeComment(post,comment)" class="btn btn-danger" 
+            <button  ng-click="removeComment(post,comment)" class="btn btn-danger"
             >Remove Comment</button>
             <button ng-click="addcmtVote(post,comment)" ng-disabled="disupcomment"class="btn btn-info">Upvote</button>
     <span class="text-primary">{{comment.votes}}</span>
@@ -89,17 +89,17 @@
           <div class="col-md-6">
               <h3 class="text-primary text-center">Login</h3>
               <form>
-        
+
         <div class="form-group">
             <label class="control-label" for="focusedInput">Email Id</label>
             <input type="text" ng-model="login.email" class="form-control">
         </div>
-        
+
         <div class="form-group">
             <label class="control-label" for="focusedInput">Password</label>
             <input type="password" ng-model="login.password" class="form-control">
         </div>
-       
+
         <button ng-click="userLogin(login)" class="btn btn-success btn-block">Login</button>
 <br/>
 <br/>
@@ -124,23 +124,23 @@
           <div class="col-md-6">
               <h3 class="text-primary text-center">SignUp</h3>
               <form>
-        
+
         <div class="form-group">
             <label class="control-label" for="focusedInput">Username</label>
             <input type="text" ng-model="user.name" class="form-control">
         </div>
-        
+
         <div class="form-group">
             <label class="control-label" for="focusedInput">Email Id</label>
             <input type="text" ng-model="user.email" class="form-control">
         </div>
-        
+
         <div class="form-group">
             <label class="control-label" for="focusedInput">Password</label>
             <input type="password" ng-model="user.password" class="form-control">
         </div>
         <br>
-       
+
         <button ng-click="userSignup(user)" class="btn btn-success btn-block">SignUp</button>
     </form>
           </div>
@@ -152,4 +152,3 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-
