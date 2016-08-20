@@ -1,4 +1,7 @@
-1. Clone the rep.
+1. Once you have git installed, follow the install procedure and setup username and email. Then clone this repository into a directory of your choice. 
+eg. 
+`cd directoryname`
+git clone "pasteurl" without doublequotes.
 2. Make sure you have NPM installed(google).
 3. cd into /pesproject/app
 4. do `node .`
