@@ -21,10 +21,10 @@ from bottle import static_file
 # def my_homejs2():
 #     return static_file('own.js','./public')
 def my_homejs3():
-    return static_file('own.js','./public')
+    #return static_file('mainpage.html','./public')
 
 
-#    return bottle.template('home_page.tpl',username='Krishna','things'=stuff})
+   return bottle.template('mainpage.html')
 # @bottle.post('/publicjs')
 # def whatShit():
 #     data=bottle.request.forms.get("shit")

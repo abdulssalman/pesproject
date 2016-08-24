@@ -26,6 +26,23 @@ io.on('connection', function (socket) {
       username: socket.username,
       message: data
     });
+
+    console.log(data);
+    $.ajax({
+    url: "test1.py",
+    type: "post",
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+    data: JSON.stringify({username: socket.username,
+      message: data}),
+    success: function(response){
+        //window.location="http://mycity.parseapp.com/city/cgi-bin/test1.py"
+        console.log(response.message);
+        console.log(response.keys);
+        console.log(response.data);
+
+    }
+});
   });
 
   // when the client emits 'add user', this listens and executes
