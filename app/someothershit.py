@@ -1,7 +1,11 @@
 # -*- coding: utf-8 -*-
 import bottle
-from bottle import static_file
+from bottle import static_file,app
+
+
 @bottle.route('/')
+# def staticFiles():
+#     return static_file('main.js',root='./static/')
 # def my_home():
 #     stuff=['kakka','shit','sundas','poop']
 #     return static_file('profilepage.html','./public')
@@ -21,7 +25,10 @@ from bottle import static_file
 # def my_homejs2():
 #     return static_file('own.js','./public')
 def my_homejs3():
-    return static_file('own.js','./public')
+    return bottle.template('index.tpl')
+@bottle.get('/style.css')
+# def styleSheets(style):
+#     return static_file('{}.css' .format(style),root='static/')
 
 
 #    return bottle.template('home_page.tpl',username='Krishna','things'=stuff})
