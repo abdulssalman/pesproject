@@ -25,7 +25,7 @@ from bottle import static_file,app
 # def my_homejs2():
 #     return static_file('own.js','./public')
 def my_homejs3():
-    return bottle.template('index.tpl')
+    return bottle.template('index.html')
 @bottle.get('/style.css')
 # def styleSheets(style):
 #     return static_file('{}.css' .format(style),root='static/')

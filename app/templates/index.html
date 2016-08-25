@@ -4,8 +4,8 @@
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="C:\Users\Krishna\Desktop\Projects\pesproject\app\public\assets\css\bootstrap.min.css">
-    <link rel="stylesheet" href="C:\Users\Krishna\Desktop\Projects\pesproject\app\public\assets\css\own.css">
+    <link rel="stylesheet" href= "{{ url_for('static', filename= 'bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{url_for('static',filename= 'own.css')}}">
     
     <title> Welcome</title>
 </head>
@@ -90,9 +90,9 @@
             </div>
         </div>
     </div>
-    <script src="C:\Users\Krishna\Desktop\Projects\pesproject\app\public\assets\js\jquery.min.js"></script>
-    <script src="C:\Users\Krishna\Desktop\Projects\pesproject\app\public\assets\css\bootstrap.min.js"></script>
-    <script src="C:\Users\Krishna\Desktop\Projects\pesproject\app\public\assets\js\own.js"></script>
+    <script src="{{url_for('static',filename='jquery.min.js'}}"></script>
+    <script src="{{url_for('static',filename='bootstrap.min.js')}}"></script>
+    <script src="{{url_for('static',filename='own.js')}}"></script>
 
 </body>
 
