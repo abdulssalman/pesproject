@@ -3,8 +3,8 @@
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/css/own.css">
+    <link rel="stylesheet" href="{{ url_for('static',filename='bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('staticc',filename='own.css')}}">
     <link rel="stylesheet" type="text/css" href="style.css">
     <title>Welcome</title>
 </head>
@@ -94,8 +94,8 @@
      <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
   <script src="/socket.io/socket.io.js"></script>
   <script src="/main.js"></script>
-    <script src="assets/js/bootstrap.min.js"></script>   
-    <script src="/assets/js/own.js"></script>
+    <script src="{{url_for('static',filename='bootstrap.min.js')}}"></script>
+    <script src="{{url_for('static',filename='own.js')}}"></script>
    
 
 </body>
