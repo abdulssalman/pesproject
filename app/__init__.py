@@ -3,8 +3,9 @@ from flask.ext.login import LoginManager
 
 
 app = Flask(__name__)
-app.config.from_object('specifications')
+app.config.from_object('config')
 lm = LoginManager()
 lm.init_app(app)
-lm.login_view = 'templogin.html'
-import app
+lm.login_view = 'login'
+
+from app import views

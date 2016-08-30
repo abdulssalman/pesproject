@@ -5,8 +5,8 @@ from wtforms import StringField,SubmitField,validators
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
 from flask_pymongo import PyMongo
-from app import app
-db=PyMongo(app)
+from view import view
+db=PyMongo(view)
 
 login_manager=LoginManager()
 
