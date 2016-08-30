@@ -1,36 +1,110 @@
-import os
-import sqlite3
-from flask import Flask, request, session, g, redirect, url_for, abort, \
-     render_template, flash
-from flask_socketio import SocketIO  
-from flask_socketio import send, emit   
+#!/usr/bin/env python
+from flask import Flask, render_template, session, request
+from flask_socketio import SocketIO, emit, join_room, leave_room, \
+    close_room, rooms, disconnect
 
+# Set this variable to "threading", "eventlet" or "gevent" to test the
+# different async modes, or leave it set to None for the application to choose
+# the best option based on installed packages.
+async_mode = None
 
 app = Flask(__name__)
-app.config.from_object(__name__)
-socketio = SocketIO(app)
+app.config['SECRET_KEY'] = 'secret!'
+socketio = SocketIO(app, async_mode=async_mode)
+thread = None
+
+
+def background_thread():
+    """Example of how to send server generated events to clients."""
+    count = 0
+    while True:
+        socketio.sleep(10)
+        count += 1
+        socketio.emit('my response',
+                      {'data': 'Server generated event', 'count': count},
+                      namespace='')
 
 
 @app.route('/')
-def main():
-    return render_template('mainpage.html') 
+def index():
+    return render_template('mainpage.html', async_mode=socketio.async_mode)
 
-@socketio.on('my event', namespace='/test')
+
+@socketio.on('my event', namespace='')
 def test_message(message):
-    emit('my response', {'data': message['data']})
+    session['receive_count'] = session.get('receive_count', 0) + 1
+    emit('my response',
+         {'data': message['data'], 'count': session['receive_count']})
 
-@socketio.on('my broadcast event', namespace='/test')
-def test_message(message):
-    emit('my response', {'data': message['data']}, broadcast=True)
 
-@socketio.on('connect', namespace='/test')
+@socketio.on('my broadcast event', namespace='')
+def test_broadcast_message(message):
+    session['receive_count'] = session.get('receive_count', 0) + 1
+    emit('my response',
+         {'data': message['data'], 'count': session['receive_count']},
+         broadcast=True)
+
+
+@socketio.on('join', namespace='')
+def join(message):
+    join_room(message['room'])
+    session['receive_count'] = session.get('receive_count', 0) + 1
+    emit('my response',
+         {'data': 'In rooms: ' + ', '.join(rooms()),
+          'count': session['receive_count']})
+
+
+@socketio.on('leave', namespace='')
+def leave(message):
+    leave_room(message['room'])
+    session['receive_count'] = session.get('receive_count', 0) + 1
+    emit('my response',
+         {'data': 'In rooms: ' + ', '.join(rooms()),
+          'count': session['receive_count']})
+
+
+@socketio.on('close room', namespace='')
+def close(message):
+    session['receive_count'] = session.get('receive_count', 0) + 1
+    emit('my response', {'data': 'Room ' + message['room'] + ' is closing.',
+                         'count': session['receive_count']},
+         room=message['room'])
+    close_room(message['room'])
+
+
+@socketio.on('my room event', namespace='')
+def send_room_message(message):
+    session['receive_count'] = session.get('receive_count', 0) + 1
+    emit('my response',
+         {'data': message['data'], 'count': session['receive_count']},
+         room=message['room'])
+
+
+@socketio.on('disconnect request', namespace='')
+def disconnect_request():
+    session['receive_count'] = session.get('receive_count', 0) + 1
+    emit('my response',
+         {'data': 'Disconnected!', 'count': session['receive_count']})
+    disconnect()
+
+
+@socketio.on('my ping', namespace='')
+def ping_pong():
+    emit('my pong')
+
+
+@socketio.on('connect', namespace='')
 def test_connect():
-    emit('my response', {'data': 'Connected'})
+    global thread
+    if thread is None:
+        thread = socketio.start_background_task(target=background_thread)
+    emit('my response', {'data': 'Connected', 'count': 0})
 
-@socketio.on('disconnect', namespace='/test')
+
+@socketio.on('disconnect', namespace='')
 def test_disconnect():
-    print('Client disconnected')
-    
+    print('Client disconnected', request.sid)
+
+
 if __name__ == '__main__':
-    socketio.run(app)   
-app.config.from_envvar('FLASKR_SETTINGS', silent=True)     
+    socketio.run(app, debug=True)
