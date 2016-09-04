@@ -3,7 +3,7 @@ from flask import request, url_for,flash,redirect
 from flask_login import login_user, logout_user, LoginManager
 from pymongo import MongoClient
 from flask_pymongo import PyMongo
-from app import app,lm
+from app import app
 # import specifications as spec
 from forms  import UserProfileForm,UserProfileForm2
 from werkzeug.security import generate_password_hash
@@ -69,3 +69,4 @@ def logout():
 def main():
     app.run('localhost', port=1010)
 main()
+

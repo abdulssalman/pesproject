@@ -1,0 +1,6 @@
+flask
+flask_login
+pymongo
+flask_pymongo
+flask_socketio
+flask-user
