@@ -3,38 +3,73 @@ from flask import request, url_for,flash,redirect
 from flask_login import login_user, logout_user, LoginManager
 from pymongo import MongoClient
 from flask_pymongo import PyMongo
-from app import app
+# from app import app,lm
 # import specifications as spec
 from forms  import UserProfileForm,UserProfileForm2
 from werkzeug.security import generate_password_hash
 from user  import User
-__name__='views'
+import os
+import sqlite3
+from flask import  request, session, g, abort
+from flask_socketio import SocketIO
+from flask_socketio import send, emit
+
 app = Flask(__name__)
-print __name__
 app.secret_key='my secret'
 app.config.from_object(__name__)
+socketio = SocketIO(app)
 
-mongo=PyMongo(app,)
+
+
+# connection=MongoClient('localhost',27017)
+# db=connection.views
+# collect=db.users
+
+mongo=PyMongo(app)
 lm = LoginManager()
 lm.init_app(app)
 app.config['MONGO_DBNAME']='UserData'
-print app.config['MONGO_DBNAME']
+# mongo.db
+# mongo.db.users
+# print app.config['MONGO_DBNAME']
 # db=cx['UserData']
 # mongo=mongo.init_app(app,config_prefix='UserData')
 
 @app.route('/')
 def home():
     return render_template('index2.html')
+@app.route('/chat')
+def main1():
+    return render_template('mainpage2.html')
+
+@socketio.on('my event', namespace='/test')
+def test_message(message):
+    emit('my response', {'data': message['data']})
+
+@socketio.on('my broadcast event', namespace='/test')
+def test_message(message):
+    emit('my response', {'data': message['data']}, broadcast=True)
+
+@socketio.on('connect', namespace='/test')
+def test_connect():
+    emit('my response', {'data': 'Connected'})
+
+@socketio.on('disconnect', namespace='/test')
+def test_disconnect():
+    print('Client disconnected')
+
+
+
 @app.route('/login', methods=['GET', 'POST'])
 def indexpage():
     form = UserProfileForm()
-
     # Process valid POST
     if request.method == 'POST' :
+        print "I am here"
         # print app.config['USER_COLLECTION'].find_one()
-        usertab=mongo.db.users.find_one({'Username':str(form.username.__class__ )})
-        print str(form.username)
-        if usertab and User.validate_login(usertab['Password'], form.password.data):
+        usertab=mongo.db.users.find_one({'Username':(str(form.username).encode()) })
+        print usertab,(form.username)
+        if usertab and User.validate_login(usertab['Password'], str(form.password).encode()):
             user_obj = User(usertab['_id'])
             login_user(user_obj)
             flash("Logged in successfully!", category='success')
@@ -44,16 +79,17 @@ def indexpage():
 
 @app.route('/register', methods=['GET', 'POST'])
 def indexpage2():
+
     form2 = UserProfileForm2()
     if request.method=='POST':
-        if form2.password.data==form2.confirm_password.data:
-            pass_hash = generate_password_hash(form2.password.data, method='pbkdf2:sha256')
-            mongo.db.users.insert({'Username':str(form2.email),'Password':pass_hash})
+        if str(form2.password).encode()==str(form2.confirm_password).encode():
+            pass_hash = generate_password_hash(str(form2.password).encode(), method='pbkdf2:sha256')
+            mongo.db.users.insert({'Username':str(form2.email).encode(),'Password':pass_hash})
             flash( "user Successfully Registered",category='success')
-            return redirect('index2.html',title='login',form =form2)
+            return redirect('index2.html',title='register',form =form2)
         else:
             print 'mismatch'
-    return render_template('index2.html', title='login', form=form2)
+    return render_template('index2.html', title='register', form=form2)
 
 @app.route('/logout')
 def logout():
@@ -66,7 +102,6 @@ def logout():
 #         return None
 #     return User(u['_id'])
 # # app.config.from_envvar('FLASKR_SETTINGS', silent=True)
-def main():
-    app.run('localhost', port=1010)
-main()
-
+if __name__ == '__main__':
+    socketio.run(app,host='localhost',port=1500)
+    # app.config.from_envvar('FLASKR_SETTINGS', silent=True)main()
